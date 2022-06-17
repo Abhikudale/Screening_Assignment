@@ -1,0 +1,16 @@
+import sys
+def replaceText(strFileloc,strText1,strText2):
+    """Function used to replace strText1 with strText2"""
+    try:
+        file1=open(strFileloc,'r')
+        data=file1.read()
+        data=data.replace(strText1,strText2)
+        file1.close
+        file1=open(strFileloc,'w')
+        file1.write(data)
+        file1.close
+    except OSError:
+        print("Could not open/read file:", strFileloc)
+        sys.exit(1)
+        
+replaceText("C:\\Users\\abhin\\Desktop\\Data Science\\example_1.txt","placement","screening")
