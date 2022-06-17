@@ -1,0 +1,106 @@
+from abc import ABC, abstractmethod
+"""
+importing abc module to define abstract class
+Person is abstract class and having get_TicketPrice as an abstract method which means get_TicketPrice method can not be implemented here
+We have two other classes Economy and Business having method get_TicketPrice implemented.
+Economy and Business ticket price will be calculated differently as these provide quality of services based on ticket type Economy and Business.
+
+"""
+class Person(ABC):
+    def __init__(self, first_Name, last_Name):
+        self.first_Name = first_Name
+        self.last_Name = last_Name
+    
+    @abstractmethod
+    def get_TicketPrice(self):
+        pass
+
+class Economy(Person):
+    def __init__(self, first_Name, last_Name, economy_Price):
+        super().__init__(first_Name, last_Name)
+        self.economy_Price=economy_Price
+
+    def get_TicketPrice(self):
+        return self.economy_Price
+
+class Business(Person):
+    def __init__(self, first_Name, last_Name, business_Price):
+        super().__init__(first_Name, last_Name)
+        self.business_Price = business_Price
+
+    def get_TicketPrice(self):
+        return round(self.business_Price * 1.4)
+    
+    
+class BookTicket():
+    def __init__(self):
+        self.booking_List = []
+    
+    def add(self,Person):
+        self.booking_List.append(Person)
+    
+    def printinfo(self):
+        for p in self.booking_List:
+            print(p.first_Name+" "+p.last_Name+" $"+str(p.get_TicketPrice()))
+
+
+bookTicket = BookTicket()
+bookTicket.add(Economy('James', 'Cott', 1000))
+bookTicket.add(Business('Garry', 'Pete', 978))
+bookTicket.printinfo()
+
+
+
+
+
+"""
+Servicing class have timesServiced, totalAmountPaidForServicing properties which are for over the period of years.This class provides information related to Servicing
+Car class have carNumber, make, model properties for the Car. This class provides information about the car.
+We have Car Servicing info which is child class of Servicing as well as Car and this can access properties of both Servicing and Car class.
+"""
+class Servicing():
+    def __init__(self, timesServiced, totalAmountPaidForServicing):
+        self.timesServiced = timesServiced
+        self.totalAmountPaidForServicing = totalAmountPaidForServicing
+    
+class Car():
+    def __init__(self, carNumber, make, model):
+        self.carNumber = carNumber
+        self.make = make
+        self.model = model
+
+class CarServicingInfo(Servicing,Car):
+    def __init__(self, ownerName, carNumber, make, timesServiced, totalAmountPaidForServicing):
+        self.ownerName = ownerName
+        print(ownerName+"  CarNumber="+carNumber+"  Make="+make+"  TotalTimesServiced="+str(timesServiced)+"  TotalAmountPaidForServicings=$"+str(totalAmountPaidForServicing))
+
+carServiceinfo=CarServicingInfo("James Carlon","CD1245","Hyundai",14,1400)
+carServiceinfo=CarServicingInfo("Vine Hampso","VB3453","BMW",4,900)
+
+
+
+
+
+
+"""
+A decorator in Python is a function that receives another function as an argument.
+The behaviour of the argument function is extended by the decorator without actually modifying it.
+The decorator function can be applied over a function using the @decorator syntax.
+In below example Vehicle function has argument of another function genFunction.
+The Vehicle() function is the decorator function that takes a function (any function that does not take any argument) as an argument. The inner function inner_function() can access the outer function's argument, so it executes some code before or after to extend the functionality before calling the argument function. 
+we can use Vehicle as a decorator to apply over a function that does not take any argument 
+"""
+def Vehicle(genFunction):
+    def EngineStart():        
+        genFunction()
+        print("Start the Engine")
+    return EngineStart()
+
+@Vehicle
+def startCar():
+    print("For Car Press Engine Start button for Car\n", end='')
+
+@Vehicle
+def startTruck():
+    print("For Truck Press Engine Start button for Truck\n", end='')
+
